@@ -1,0 +1,24 @@
+[project]
+name = "j2p"
+version = "0.1.0"
+description = "Json 2 Pydantic"
+readme = "README.md"
+authors = [
+    { name = "Eli", email = "53414320+Eli-Chandler@users.noreply.github.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "jinja2>=3.1.6",
+]
+
+[project.scripts]
+j2p = "j2p:cli"
+
+[build-system]
+requires = ["uv_build>=0.9.3,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+]
