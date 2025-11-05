@@ -1,0 +1,1 @@
+`uvx --from git+https://github.com/Eli-Chandler/j2p j2p <json1> <json2> ... <jsonN>`
