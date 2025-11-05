@@ -22,6 +22,13 @@ def main():
         default=None,
         help="Output file to write the generated Pydantic models (default: stdout)"
     )
+    parser.add_argument(
+        "--name",
+        "-n",
+        type=str,
+        default="Root",
+        help="Name of the root Pydantic model (default: Root)"
+    )
 
     args = parser.parse_args()
 
@@ -37,7 +44,7 @@ def main():
 
     parsed_nodes = [parse_json(data) for data in json_data_list]
     combined_node = combine_nodes(parsed_nodes)
-    pydantic_models = generate_pydantic_models(combined_node)
+    pydantic_models = generate_pydantic_models(combined_node, root_name=args.name)
 
     if args.output:
         try:

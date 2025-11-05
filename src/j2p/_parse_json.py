@@ -12,6 +12,11 @@ class Prim:
     def __str__(self, indent=0):
         return self.name
 
+    def to_python_type(self) -> str:
+        if self.name == "null":
+            return "None"
+        return self.name
+
 
 @dataclass(frozen=True)
 class Obj:

@@ -3,6 +3,8 @@ from dataclasses import dataclass
 
 from j2p._parse_json import Obj, Prim, J2PUnionType, Arr
 
+import keyword
+
 
 @dataclass(frozen=True)
 class Schema:
@@ -26,6 +28,10 @@ def generate_pydantic_models(schema: Obj, root_name: str = "Root") -> str:
 
     return "\n".join(lines)
 
+def get_field_name(field_name: str) -> str:
+    if keyword.iskeyword(field_name):
+        return field_name + "_"
+    return field_name
 
 def flatten_obj(obj: Obj, parent_name: str = "Root") -> list[Schema]:
     schemas: list[Schema] = []
@@ -43,7 +49,7 @@ def flatten_obj(obj: Obj, parent_name: str = "Root") -> list[Schema]:
             for prop_name, prop_type in t.props:
                 schema.fields.append(
                     (
-                        prop_name,
+                        get_field_name(prop_name),
                         _flatten(prop_type, f"{curr_name}{prop_name.capitalize()}"),
                     )
                 )
@@ -61,7 +67,7 @@ def flatten_obj(obj: Obj, parent_name: str = "Root") -> list[Schema]:
                 item_type = _flatten(t.items, f"{curr_name}Item")
                 return f"list[{item_type}]"
         else:
-            return str(t)
+            return t.to_python_type()
 
     _flatten(obj, parent_name)
 
